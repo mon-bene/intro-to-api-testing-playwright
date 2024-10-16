@@ -62,7 +62,6 @@ test('post order with incorrect data should receive code 400', async ({ request 
 })
 
 test('put order with valid data should receive code 200', async ({ request }) => {
-
   const requestBody = {
     status: 'OPEN',
     courierId: 0,
@@ -71,11 +70,11 @@ test('put order with valid data should receive code 200', async ({ request }) =>
     comment: 'order',
     id: 5,
   }
-  const requestHeaders = { api_key: '1234567890123456'}
+  const requestHeaders = { api_key: '1234567890123456' }
   const response = await request.put('https://backend.tallinn-learning.ee/test-orders/5', {
     headers: requestHeaders,
     data: requestBody,
-})
+  })
   console.log('response status:', response.status())
   console.log('response body:', await response.json())
   expect(response.status()).toBe(StatusCodes.OK)
@@ -84,7 +83,6 @@ test('put order with valid data should receive code 200', async ({ request }) =>
 // 9 homework
 
 test('put order with invalid data should receive code 400', async ({ request }) => {
-
   const requestBody = {
     status: 'OPEN',
     courierId: 3,
@@ -93,7 +91,7 @@ test('put order with invalid data should receive code 400', async ({ request }) 
     comment: 'Order',
     id: 'fail',
   }
-  const requestHeaders = { api_key: '1234567890123456'}
+  const requestHeaders = { api_key: '1234567890123456' }
   const response = await request.put('https://backend.tallinn-learning.ee/test-orders/5', {
     headers: requestHeaders,
     data: requestBody,
@@ -103,43 +101,53 @@ test('put order with invalid data should receive code 400', async ({ request }) 
 })
 
 test('Delete order by providing valid data should receive code 204', async ({ request }) => {
-
-  const requestHeaders = { api_key: '1234567890123456'}
-  const response = await request.delete('https://backend.tallinn-learning.ee/test-orders/1',{
-    headers: requestHeaders
+  const requestHeaders = { api_key: '1234567890123456' }
+  const response = await request.delete('https://backend.tallinn-learning.ee/test-orders/1', {
+    headers: requestHeaders,
   })
   console.log('response status:', response.status())
   expect(response.status()).toBe(StatusCodes.NO_CONTENT)
 })
 
 test('Delete order by providing invalid id should receive code 400', async ({ request }) => {
-
-  const requestHeaders = { api_key: '1234567890123456'}
-  const response = await request.delete('https://backend.tallinn-learning.ee/test-orders/invalid-id',{
-    headers: requestHeaders
-  })
+  const requestHeaders = { api_key: '1234567890123456' }
+  const response = await request.delete(
+    'https://backend.tallinn-learning.ee/test-orders/invalid-id',
+    {
+      headers: requestHeaders,
+    },
+  )
   console.log('response status:', response.status())
   console.log('response body:', await response.json())
   expect(response.status()).toBe(StatusCodes.BAD_REQUEST)
 })
 
-test('Authenticate a user by providing valid username and password should receive code 200', async ({ request }) => {
-
-  const requestHeaders = { api_key: '1234567890123456'}
-  const response = await request.get('https://backend.tallinn-learning.ee/test-orders?username=mo&password=something',{
-    headers: requestHeaders
-  })
+test('Authenticate a user by providing valid username and password should receive code 200', async ({
+  request,
+}) => {
+  const requestHeaders = { api_key: '1234567890123456' }
+  const response = await request.get(
+    'https://backend.tallinn-learning.ee/test-orders?username=mo&password=something',
+    {
+      headers: requestHeaders,
+    },
+  )
   console.log('response status:', response.status())
   console.log('response body:', await response.json())
   expect(response.status()).toBe(StatusCodes.OK)
 })
 
-test('Authenticate a user by providing just username should receive code 500', async ({ request }) => {
-  const requestHeaders = { api_key: '1234567890123456'}
+test('Authenticate a user by providing just username should receive code 500', async ({
+  request,
+}) => {
+  const requestHeaders = { api_key: '1234567890123456' }
 
-  const response = await request.get('https://backend.tallinn-learning.ee/test-orders?username=invalidUser',{
-    headers: requestHeaders
-  })
+  const response = await request.get(
+    'https://backend.tallinn-learning.ee/test-orders?username=invalidUser',
+    {
+      headers: requestHeaders,
+    },
+  )
 
   console.log('response status:', response.status())
   console.log('response body:', await response.json())
