@@ -15,6 +15,14 @@ test('Calculate risk score with valid data for Low Risk level - positive decisio
   console.log('response status:', response.status())
   console.log('response body:', await response.json())
   expect.soft(response.status()).toBe(StatusCodes.OK)
+
+  const responseBody = await response.json()
+  expect.soft(response.status()).toBe(StatusCodes.OK)
+  expect.soft(responseBody.riskScore).toBeDefined()
+  expect.soft(responseBody.riskLevel).toBe('Low Risk')
+  expect.soft(responseBody.riskPeriods).toBeDefined()
+  expect.soft(responseBody.applicationId).toBeTruthy()
+  expect.soft(responseBody.riskDecision).toBe('positive')
 })
 
 test('Calculate risk score with valid data for Medium risk level- positive decision- receive code 200', async ({
@@ -31,6 +39,14 @@ test('Calculate risk score with valid data for Medium risk level- positive decis
   console.log('response status:', response.status())
   console.log('response body:', await response.json())
   expect.soft(response.status()).toBe(StatusCodes.OK)
+
+  const responseBody = await response.json()
+  expect.soft(response.status()).toBe(StatusCodes.OK)
+  expect.soft(responseBody.riskScore).toBeDefined()
+  expect.soft(responseBody.riskLevel).toBe('Medium Risk')
+  expect.soft(responseBody.riskPeriods).toBeDefined()
+  expect.soft(responseBody.applicationId).toBeTruthy()
+  expect.soft(responseBody.riskDecision).toBe('positive')
 })
 
 test('Calculate risk score with valid data for High risk - positive decision - receive code 200', async ({
@@ -47,6 +63,14 @@ test('Calculate risk score with valid data for High risk - positive decision - r
   console.log('response status:', response.status())
   console.log('response body:', await response.json())
   expect.soft(response.status()).toBe(StatusCodes.OK)
+
+  const responseBody = await response.json()
+  expect.soft(response.status()).toBe(StatusCodes.OK)
+  expect.soft(responseBody.riskScore).toBeDefined()
+  expect.soft(responseBody.riskLevel).toBe('High Risk')
+  expect.soft(responseBody.riskPeriods).toBeDefined()
+  expect.soft(responseBody.applicationId).toBeTruthy()
+  expect.soft(responseBody.riskDecision).toBe('positive')
 })
 test('Calculate risk score with data for negative decision - receive code 200', async ({
   request,
@@ -60,10 +84,17 @@ test('Calculate risk score with data for negative decision - receive code 200', 
       data: riskDto,
     },
   )
-
   console.log('response status:', response.status())
   console.log('response body:', await response.json())
   expect.soft(response.status()).toBe(StatusCodes.OK)
+
+  const responseBody = await response.json()
+  expect.soft(response.status()).toBe(StatusCodes.OK)
+  expect.soft(responseBody.riskScore).toBeDefined()
+  expect.soft(responseBody.riskLevel).toBe('Very High Risk')
+  expect.soft(responseBody.riskPeriods).toBeDefined()
+  expect.soft(responseBody.applicationId).toBeTruthy()
+  expect.soft(responseBody.riskDecision).toBe('negative')
 })
 
 test('Calculate risk score with invalid data (no incomes) - receive code 400', async ({
