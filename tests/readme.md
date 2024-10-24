@@ -6,3 +6,14 @@
 | 4   | DELETE   | Delete order by providing invalid id should receive code 400                         |
 | 5   | GET      | Authenticate a user by providing valid username and password should receive code 200 |
 | 6   | GET      | Authenticate a user by providing just username should receive code 500               |
+
+Homework 10 - Risk score of application
+
+| No  | Endpoint | Test                                                                                            |
+| --- | -------- | ----------------------------------------------------------------------------------------------- |
+| 1   | POST     | Calculate risk score with valid date for Low Risk level - positive decision - receive code 200  |
+| 2   | POST     | Calculate risk score with valid date for Medium risk level- positive decision- receive code 200 |
+| 3   | POST     | Calculate risk score with valid date for High risk - positive decision - receive code 200       |
+| 4   | POST     | Calculate risk score with data for negative decision - receive code 200                         |
+| 5   | POST     | Calculate risk score with invalid data (no incomes) - receive code 400                          |
+| 6   | POST     | Calculate risk score with invalid data (debt < 0) - receive code 400                            |
