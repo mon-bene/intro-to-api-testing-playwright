@@ -40,10 +40,8 @@ test('Successful authorization flow return 200 and valid JWT ', async ({ request
 
   const responseBody = await response.text()
   console.log(responseBody)
-
-  const jwt = responseBody.toString()
   const jwtPattern = /^eyJhb[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+$/
-  expect(jwt).toMatch(jwtPattern)
+  expect(responseBody).toMatch(jwtPattern)
 })
 
 test('Authorization flow with incorrect HTTP method returns 405', async ({ request }) => {
