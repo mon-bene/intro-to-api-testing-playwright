@@ -17,3 +17,12 @@ Homework 10 - Risk score of application
 | 4   | POST     | Calculate risk score with data for negative decision - receive code 200                         |
 | 5   | POST     | Calculate risk score with invalid data (no incomes) - receive code 400                          |
 | 6   | POST     | Calculate risk score with invalid data (debt < 0) - receive code 400                            |
+
+Classwork + homework11 for auth-flow.spec.ts
+
+| No  | Endpoint | Test                                                                        |
+| --- | -------- | --------------------------------------------------------------------------- |
+| 1   | POST     | Incorrect username and password return 401                                  |
+| 2   | POST     | Successful authorization flow with correct username and password return 200 |
+| 3   | POST     | Successful authorization flow return 200 and valid JWT                      |
+| 4   | POST     | Authorization flow with incorrect HTTP method returns 405                   |
