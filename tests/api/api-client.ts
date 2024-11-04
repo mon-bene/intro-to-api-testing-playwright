@@ -7,7 +7,6 @@ import { OrderDto } from '../dto/order-dto'
 const serviceURL = 'https://backend.tallinn-learning.ee/'
 const loginPath = 'login/student'
 const orderPath = 'orders'
-const orderByIdPath = (id: string) => `orders/${id}`
 
 export class ApiClient {
   static instance: ApiClient
@@ -63,24 +62,9 @@ export class ApiClient {
 
   //homework12
 
-  async createOrderAndRetrieveOrderId(): Promise<number> {
-    console.log('Creating order...')
-    const response = await this.request.post(`${serviceURL}${orderPath}`, {
-      data: OrderDto.createOrderWithUndefinedOrderId(),
-      headers: {
-        Authorization: `Bearer ${this.jwt}`,
-      },
-    })
-    console.log('Order response: ', response)
-
-    expect(response.status()).toBe(StatusCodes.OK)
-    const responseBody = await response.json()
-
-    const orderId = responseBody.id
-    expect.soft(orderId).toBeDefined()
-
-    console.log('Order retrieval with ID :${id}')
-    const getOrderResponse = await this.request.get(`${serviceURL}${orderByIdPath(orderId)}`, {
+  async retrieveOrderById(orderId: number): Promise<any> {
+    console.log(`Order retrieving by ID: ${orderId}`);
+    const getOrderResponse = await this.request.get(`${serviceURL}${orderPath}/${orderId}`, {
       headers: {
         Authorization: `Bearer ${this.jwt}`,
       },
@@ -94,38 +78,10 @@ export class ApiClient {
     return getOrderResponseBody
   }
 
-  async createOrderAndDeleteOrderId(): Promise<number> {
-    console.log('Creating order...')
-    const response = await this.request.post(`${serviceURL}${orderPath}`, {
-      data: OrderDto.createOrderWithUndefinedOrderId(),
-      headers: {
-        Authorization: `Bearer ${this.jwt}`,
-      },
-    })
-    console.log('Order response: ', response)
+  async deleteOrderId(orderId: number): Promise<any> {
 
-    expect(response.status()).toBe(StatusCodes.OK)
-    const responseBody = await response.json()
-
-    const orderId = responseBody.id
-    expect.soft(orderId).toBeDefined()
-
-    console.log('Order retrieval with ID :${id}')
-    const getOrderResponse = await this.request.get(`${serviceURL}${orderByIdPath(orderId)}`, {
-      headers: {
-        Authorization: `Bearer ${this.jwt}`,
-      },
-    })
-    console.log('Order retrieval response: ', getOrderResponse)
-    expect(getOrderResponse.status()).toBe(StatusCodes.OK)
-
-    const getOrderResponseBody = await getOrderResponse.json()
-    console.log('Order retrieved: ', getOrderResponseBody)
-
-    console.log('Deleting order with ID: ${Id}')
-    const deleteOrderResponse = await this.request.delete(
-      `${serviceURL}${orderByIdPath(orderId)}`,
-      {
+    console.log(`Deleting order with ID: ${orderId}`)
+    const deleteOrderResponse = await this.request.delete(`${serviceURL}${orderPath}/${orderId}`, {
         headers: {
           Authorization: `Bearer ${this.jwt}`,
         },
@@ -134,7 +90,5 @@ export class ApiClient {
 
     console.log('Order deletion response: ', deleteOrderResponse)
     expect(deleteOrderResponse.status()).toBe(StatusCodes.OK)
-
-    return getOrderResponseBody
   }
 }

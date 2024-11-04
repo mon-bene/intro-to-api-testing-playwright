@@ -6,7 +6,7 @@ import { OrderDto } from './dto/order-dto'
 const serviceURL = 'https://backend.tallinn-learning.ee/'
 const loginPath = 'login/student'
 const orderPath = 'orders'
-const orderByIdPath = (id: string) => `orders/${id}`
+
 
 test('Incorrect username and password return 401', async ({ request }) => {
   const loginDto = LoginDto.createLoginWithInCorrectCredentials()
@@ -109,7 +109,7 @@ test('successful authorization and get order by ID ', async ({ request }) => {
 
   const orderId = orderResponseJson.id
 
-  const getOrderResponse = await request.get(`${serviceURL}${orderByIdPath(orderId)}`, {
+  const getOrderResponse = await request.get(`${serviceURL}${orderPath}/${orderId}`, {
     headers: {
       Authorization: `Bearer ${jwt}`, // Pass JWT for authorization
     },
@@ -147,7 +147,7 @@ test('successful authorization and delete order by ID ', async ({ request }) => 
 
   const orderId = orderResponseJson.id
 
-  const deleteOrderResponse = await request.delete(`${serviceURL}${orderByIdPath(orderId)}`, {
+  const deleteOrderResponse = await request.delete(`${serviceURL}${orderPath}/${orderId}`, {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
