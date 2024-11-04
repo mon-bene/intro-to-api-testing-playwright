@@ -7,6 +7,7 @@ import { OrderDto } from '../dto/order-dto'
 const serviceURL = 'https://backend.tallinn-learning.ee/'
 const loginPath = 'login/student'
 const orderPath = 'orders'
+const orderByIdPath = (id: string) => `orders/${id}`
 
 export class ApiClient {
   static instance: ApiClient
@@ -58,5 +59,82 @@ export class ApiClient {
     console.log(responseBody)
 
     return responseBody.id
+  }
+
+  //homework12
+
+  async createOrderAndRetrieveOrderId(): Promise<number> {
+    console.log('Creating order...')
+    const response = await this.request.post(`${serviceURL}${orderPath}`, {
+      data: OrderDto.createOrderWithUndefinedOrderId(),
+      headers: {
+        Authorization: `Bearer ${this.jwt}`,
+      },
+    })
+    console.log('Order response: ', response)
+
+    expect(response.status()).toBe(StatusCodes.OK)
+    const responseBody = await response.json()
+
+    const orderId = responseBody.id
+    expect.soft(orderId).toBeDefined()
+
+    console.log('Order retrieval with ID :${id}')
+    const getOrderResponse = await this.request.get(`${serviceURL}${orderByIdPath(orderId)}`, {
+      headers: {
+        Authorization: `Bearer ${this.jwt}`,
+      },
+    })
+    console.log('Order retrieval response: ', getOrderResponse)
+    expect(getOrderResponse.status()).toBe(StatusCodes.OK)
+
+    const getOrderResponseBody = await getOrderResponse.json()
+    console.log('Order retrieved: ', getOrderResponseBody)
+
+    return getOrderResponseBody
+  }
+
+  async createOrderAndDeleteOrderId(): Promise<number> {
+    console.log('Creating order...')
+    const response = await this.request.post(`${serviceURL}${orderPath}`, {
+      data: OrderDto.createOrderWithUndefinedOrderId(),
+      headers: {
+        Authorization: `Bearer ${this.jwt}`,
+      },
+    })
+    console.log('Order response: ', response)
+
+    expect(response.status()).toBe(StatusCodes.OK)
+    const responseBody = await response.json()
+
+    const orderId = responseBody.id
+    expect.soft(orderId).toBeDefined()
+
+    console.log('Order retrieval with ID :${id}')
+    const getOrderResponse = await this.request.get(`${serviceURL}${orderByIdPath(orderId)}`, {
+      headers: {
+        Authorization: `Bearer ${this.jwt}`,
+      },
+    })
+    console.log('Order retrieval response: ', getOrderResponse)
+    expect(getOrderResponse.status()).toBe(StatusCodes.OK)
+
+    const getOrderResponseBody = await getOrderResponse.json()
+    console.log('Order retrieved: ', getOrderResponseBody)
+
+    console.log('Deleting order with ID: ${Id}')
+    const deleteOrderResponse = await this.request.delete(
+      `${serviceURL}${orderByIdPath(orderId)}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.jwt}`,
+        },
+      },
+    )
+
+    console.log('Order deletion response: ', deleteOrderResponse)
+    expect(deleteOrderResponse.status()).toBe(StatusCodes.OK)
+
+    return getOrderResponseBody
   }
 }
