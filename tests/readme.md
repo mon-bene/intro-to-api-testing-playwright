@@ -26,3 +26,11 @@ Classwork + homework11 for auth-flow.spec.ts
 | 2   | POST     | Successful authorization flow with correct username and password return 200 |
 | 3   | POST     | Successful authorization flow return 200 and valid JWT                      |
 | 4   | POST     | Authorization flow with incorrect HTTP method returns 405                   |
+
+Classwork + homework12 for auth-flow.spec.ts
+
+| No  | Endpoint    | Test                                            |
+| --- | ----------- | ----------------------------------------------- |
+| 5   | POST        | successful authorization and creat order        |
+| 6   | POST /GET   | successful authorization and get order by ID    |
+| 7   | POST/DELETE | successful authorization and delete order by ID |

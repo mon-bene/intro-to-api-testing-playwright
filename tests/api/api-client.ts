@@ -59,4 +59,34 @@ export class ApiClient {
 
     return responseBody.id
   }
+
+  //homework12
+
+  async retrieveOrderById(orderId: number): Promise<any> {
+    console.log(`Order retrieving by ID: ${orderId}`)
+    const getOrderResponse = await this.request.get(`${serviceURL}${orderPath}/${orderId}`, {
+      headers: {
+        Authorization: `Bearer ${this.jwt}`,
+      },
+    })
+    console.log('Order retrieval response: ', getOrderResponse)
+    expect(getOrderResponse.status()).toBe(StatusCodes.OK)
+
+    const getOrderResponseBody = await getOrderResponse.json()
+    console.log('Order retrieved: ', getOrderResponseBody)
+
+    return getOrderResponseBody
+  }
+
+  async deleteOrderId(orderId: number): Promise<any> {
+    console.log(`Deleting order with ID: ${orderId}`)
+    const deleteOrderResponse = await this.request.delete(`${serviceURL}${orderPath}/${orderId}`, {
+      headers: {
+        Authorization: `Bearer ${this.jwt}`,
+      },
+    })
+
+    console.log('Order deletion response: ', deleteOrderResponse)
+    expect(deleteOrderResponse.status()).toBe(StatusCodes.OK)
+  }
 }

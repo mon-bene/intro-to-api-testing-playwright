@@ -80,3 +80,79 @@ test('successful authorization and creat order ', async ({ request }) => {
   expect.soft(orderResponseJson.status).toBe('OPEN')
   expect.soft(orderResponseJson.id).toBeDefined()
 })
+
+//homework 12
+
+test('successful authorization and get order by ID ', async ({ request }) => {
+  const loginDto = LoginDto.createLoginWithCorrectCredentials()
+  const response = await request.post(`${serviceURL}${loginPath}`, {
+    data: loginDto,
+  })
+  console.log('response status:', response.status())
+  expect.soft(response.status()).toBe(StatusCodes.OK)
+
+  const jwt = await response.text() // define jwt as const
+
+  const orderDto = OrderDto.createOrderWithCorrectRandomData()
+  orderDto.id = undefined
+
+  const orderResponse = await request.post(`${serviceURL}${orderPath}`, {
+    data: orderDto,
+    headers: {
+      Authorization: `Bearer ${jwt}`, //use jwt with this references
+    },
+  })
+
+  const orderResponseJson = await orderResponse.json() //transformed to json body
+  expect.soft(orderResponseJson.id).toBeDefined()
+
+  const orderId = orderResponseJson.id
+
+  const getOrderResponse = await request.get(`${serviceURL}${orderPath}/${orderId}`, {
+    headers: {
+      Authorization: `Bearer ${jwt}`, // Pass JWT for authorization
+    },
+  })
+
+  const getOrderResponseJson = await getOrderResponse.json()
+  console.log('Order retrieval response:', getOrderResponseJson)
+  expect.soft(getOrderResponse.status()).toBe(StatusCodes.OK)
+  expect.soft(getOrderResponseJson.id).toBe(orderId)
+  expect.soft(getOrderResponseJson.status).toBe('OPEN')
+})
+
+test('successful authorization and delete order by ID ', async ({ request }) => {
+  const loginDto = LoginDto.createLoginWithCorrectCredentials()
+  const response = await request.post(`${serviceURL}${loginPath}`, {
+    data: loginDto,
+  })
+  console.log('response status:', response.status())
+  expect.soft(response.status()).toBe(StatusCodes.OK)
+
+  const jwt = await response.text() // define jwt as const
+
+  const orderDto = OrderDto.createOrderWithCorrectRandomData()
+  orderDto.id = undefined
+
+  const orderResponse = await request.post(`${serviceURL}${orderPath}`, {
+    data: orderDto,
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  })
+
+  const orderResponseJson = await orderResponse.json() //transformed to json body
+  expect.soft(orderResponseJson.id).toBeDefined()
+
+  const orderId = orderResponseJson.id
+
+  const deleteOrderResponse = await request.delete(`${serviceURL}${orderPath}/${orderId}`, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  })
+
+  const deleteOrderResponseJson = await deleteOrderResponse.json()
+  console.log('Order delete response:', deleteOrderResponseJson)
+  expect.soft(deleteOrderResponse.status()).toBe(StatusCodes.OK)
+})
